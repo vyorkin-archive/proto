@@ -6,8 +6,8 @@ class CreatePlayers < ActiveRecord::Migration
   def change
     create_table :players do |t|
       t.references :user, index: true
-      t.decimal :latitude,  precision: 9, scale: 6
-      t.decimal :longitude, precision: 9, scale: 6
+      t.decimal :latitude,  precision: 10, scale: 6
+      t.decimal :longitude, precision: 10, scale: 6
 
       t.timestamps
     end

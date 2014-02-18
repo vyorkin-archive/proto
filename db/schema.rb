@@ -19,8 +19,9 @@ ActiveRecord::Schema.define(version: 20140202161047) do
   enable_extension "postgis"
 
   create_table "characteristics", force: true do |t|
-    t.string   "title",                   null: false
-    t.hstore   "attrs",      default: {}
+    t.string   "title",                    null: false
+    t.text     "description"
+    t.hstore   "attrs",       default: {}
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -29,10 +30,11 @@ ActiveRecord::Schema.define(version: 20140202161047) do
 
   create_table "entities", force: true do |t|
     t.integer  "entity_type_id"
-    t.string   "title",                                               null: false
-    t.hstore   "attrs",                                  default: {}
-    t.decimal  "latitude",       precision: 9, scale: 6
-    t.decimal  "longitude",      precision: 9, scale: 6
+    t.string   "title",                                                null: false
+    t.text     "description"
+    t.hstore   "attrs",                                   default: {}
+    t.decimal  "latitude",       precision: 10, scale: 6
+    t.decimal  "longitude",      precision: 10, scale: 6
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -63,9 +65,12 @@ ActiveRecord::Schema.define(version: 20140202161047) do
   end
 
   add_index "entity_types_interactions", ["entity_type_id", "interaction_id"], name: "entity_types_interactions_unqiue_index", unique: true, using: :btree
+  add_index "entity_types_interactions", ["entity_type_id"], name: "index_entity_types_interactions_on_entity_type_id", using: :btree
+  add_index "entity_types_interactions", ["interaction_id"], name: "index_entity_types_interactions_on_interaction_id", using: :btree
 
   create_table "interactions", force: true do |t|
-    t.string   "title",      null: false
+    t.string   "title",       null: false
+    t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -92,6 +97,7 @@ ActiveRecord::Schema.define(version: 20140202161047) do
   create_table "items", force: true do |t|
     t.integer  "item_type_id"
     t.string   "title",                     null: false
+    t.text     "description"
     t.hstore   "attrs",        default: {}
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -103,17 +109,19 @@ ActiveRecord::Schema.define(version: 20140202161047) do
   create_table "player_skills", force: true do |t|
     t.integer  "player_id",    null: false
     t.integer  "skill_id",     null: false
-    t.datetime "last_user_at"
+    t.datetime "last_used_at"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "player_skills", ["player_id", "skill_id"], name: "index_player_skills_on_player_id_and_skill_id", unique: true, using: :btree
+  add_index "player_skills", ["player_id"], name: "index_player_skills_on_player_id", using: :btree
+  add_index "player_skills", ["skill_id"], name: "index_player_skills_on_skill_id", using: :btree
 
   create_table "players", force: true do |t|
     t.integer  "user_id"
-    t.decimal  "latitude",   precision: 9, scale: 6
-    t.decimal  "longitude",  precision: 9, scale: 6
+    t.decimal  "latitude",   precision: 10, scale: 6
+    t.decimal  "longitude",  precision: 10, scale: 6
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -125,7 +133,9 @@ ActiveRecord::Schema.define(version: 20140202161047) do
     t.integer "characteristic_id", null: false
   end
 
+  add_index "players_characteristics", ["characteristic_id"], name: "index_players_characteristics_on_characteristic_id", using: :btree
   add_index "players_characteristics", ["player_id", "characteristic_id"], name: "players_characteristics_unique_index", unique: true, using: :btree
+  add_index "players_characteristics", ["player_id"], name: "index_players_characteristics_on_player_id", using: :btree
 
   create_table "skill_dependencies", id: false, force: true do |t|
     t.integer "from_id", null: false
@@ -135,8 +145,9 @@ ActiveRecord::Schema.define(version: 20140202161047) do
   add_index "skill_dependencies", ["from_id", "to_id"], name: "index_skill_dependencies_on_from_id_and_to_id", unique: true, using: :btree
 
   create_table "skills", force: true do |t|
-    t.string   "title",                   null: false
-    t.hstore   "attrs",      default: {}
+    t.string   "title",                    null: false
+    t.text     "description"
+    t.hstore   "attrs",       default: {}
     t.datetime "created_at"
     t.datetime "updated_at"
   end

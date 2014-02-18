@@ -7,9 +7,10 @@ class CreateEntities < ActiveRecord::Migration
     create_table :entities do |t|
       t.references :entity_type, index: true
       t.string :title, null: false
+      t.text :description
       t.hstore :attrs, default: {}
-      t.decimal :latitude,  precision: 9, scale: 6
-      t.decimal :longitude, precision: 9, scale: 6
+      t.decimal :latitude,  precision: 10, scale: 6
+      t.decimal :longitude, precision: 10, scale: 6
 
       t.timestamps
     end

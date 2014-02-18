@@ -7,6 +7,7 @@ class CreateItems < ActiveRecord::Migration
     create_table :items do |t|
       t.references :item_type, index: true
       t.string :title, null: false
+      t.text :description
       t.hstore :attrs, default: {}
 
       t.timestamps

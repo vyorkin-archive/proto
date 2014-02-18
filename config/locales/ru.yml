@@ -1,0 +1,13 @@
+ru:
+  activerecord:
+    models:
+      characteristic: Характеристика
+      entity: Сущность
+      entity_type: Тип сущности
+      interaction: Взаимодействие
+      item: Предмет
+      item_type: Тип предмета
+      player: Игрок
+      player_skill: Умение игрока
+      skill: Умение
+      user: Пользователь

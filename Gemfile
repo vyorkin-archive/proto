@@ -37,6 +37,7 @@ end
 
 group :test do
   gem 'factory_girl_rails'
+  gem 'factory_girl_sequences'
 end
 
 group :doc do

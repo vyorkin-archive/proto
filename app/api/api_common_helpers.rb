@@ -25,10 +25,7 @@ module APICommonHelpers
 
   def try_update!(klass, id_key, *attrs)
     record = try_find(klass, id_key)
-    unless record.update_attributes(extract_attributes(attrs))
-      bad_request!(record.errors.full_messages.join('. '))
-    end
-    record
+    update!(klass, attrs)
   end
 
   def try_save!(record)
@@ -38,22 +35,42 @@ module APICommonHelpers
     record
   end
 
-  def try_find(klass, id_key)
-    record = klass.find_by(id_key => params[id_key])
-    unless record.present?
-      model_name = I18n.t(resource_name.to_s.downcase, scope: 'activerecord.models')
-      invalid_request! "Запись типа #{model_name} с #{id_key} = #{params[id_key]} не найдена"
+  def try_find(klass, id_key, param_key = id_key)
+    record = klass.find_by(id_key => params[param_key])
+    model_not_found!(klass, id_key) unless record.present?
+    record
+  end
+
+  def try_destroy!(klass, id_key)
+    destroy!(try_find(klass, id_key))
+  end
+
+  def update!(record, *attrs)
+    unless record.update_attributes(extract_attributes(attrs))
+      bad_request!(record.errors.full_messages.join('. '))
     end
     record
+  end
+
+  def destroy!(record)
+    record.destroy
+    status 204
   end
 
   def safe_params
     declared(params, include_missing: false)
   end
 
+  protected
+
+  def model_not_found!(klass, id_key)
+    model_name = I18n.t(klass.to_s.downcase, scope: 'activerecord.models')
+    not_found! "Запись типа #{klass} (#{model_name}) с #{id_key} = #{params[id_key]} не найдена"
+  end
+
   private
 
   def extract_attributes(attrs)
-    Hash[attrs.map { |attr| [attr, params[attr]] }]
+    Hash[attrs.map { |attr| [attr, safe_params[attr]] }]
   end
 end

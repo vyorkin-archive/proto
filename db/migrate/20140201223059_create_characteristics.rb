@@ -6,6 +6,7 @@ class CreateCharacteristics < ActiveRecord::Migration
   def change
     create_table :characteristics do |t|
       t.string :title, null: false
+      t.text :description
       t.hstore :attrs, default: {}
 
       t.timestamps

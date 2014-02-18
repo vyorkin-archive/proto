@@ -1,9 +1,9 @@
 class CreatePlayerSkills < ActiveRecord::Migration
   def change
     create_table :player_skills do |t|
-      t.references :player, null: false
-      t.references :skill, null: false
-      t.timestamp :last_user_at
+      t.references :player, null: false, index: true
+      t.references :skill, null: false, index: true
+      t.timestamp :last_used_at
 
       t.timestamps
     end
