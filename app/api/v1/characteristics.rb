@@ -39,7 +39,7 @@ module V1
         optional :attrs, type: Hash, desc: 'Атрибуты'
       end
       put '/', jbuilder: 'v1/characteristics/show' do
-        update!(@characterisic, :title, :description, :attrs)
+        update!(@characteristic, :title, :description, :attrs)
       end
 
       desc 'Удалить характеристику'

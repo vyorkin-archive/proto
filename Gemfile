@@ -21,12 +21,10 @@ gem 'therubyracer', platforms: :ruby
 gem 'jquery-rails'
 gem 'twitter-bootstrap-rails'
 
-gem 'byebug'
-gem 'pry-byebug'
-gem 'pry-rails'
-
 group :development do
-  gem 'binding_of_caller'
+  gem 'byebug'
+  gem 'pry-byebug'
+  gem 'pry-rails'
   gem 'better_errors'
   gem 'capistrano'
   gem 'i18n-tasks'
@@ -35,7 +33,12 @@ group :development do
   gem 'squasher'
 end
 
+group :development, :test do
+  gem 'rspec-rails', '~> 3.0.0.beta'
+end
+
 group :test do
+  gem 'database_cleaner'
   gem 'factory_girl_rails'
   gem 'factory_girl_sequences'
 end

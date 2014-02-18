@@ -5,8 +5,10 @@
 * player_profile
 * skill
 * charactestic
-* building
-* action
+* entity
+* interaction
+
+* action (with time)
 
 For now its just a boilerplate code everywhere
 I left it there as is for enthropy UX

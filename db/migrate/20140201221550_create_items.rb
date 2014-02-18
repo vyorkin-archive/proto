@@ -6,13 +6,14 @@ class CreateItems < ActiveRecord::Migration
   def change
     create_table :items do |t|
       t.references :item_type, index: true
-      t.string :title, null: false
-      t.text :description
       t.hstore :attrs, default: {}
+      t.decimal :latitude,  precision: 10, scale: 6
+      t.decimal :longitude, precision: 10, scale: 6
 
       t.timestamps
     end
 
-    add_gin_index :items, :attrs
+    add_gist_index :items
+    add_gin_index  :items, :attrs
   end
 end

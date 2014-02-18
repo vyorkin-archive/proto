@@ -1,6 +1,6 @@
 class CreateEntityTypesInteractions < ActiveRecord::Migration
   def change
-    create_table :entity_types_interactions, id: false do |t|
+    create_table :entity_types_interactions do |t|
       t.references :entity_type, null: false, index: true
       t.references :interaction, null: false, index: true
     end

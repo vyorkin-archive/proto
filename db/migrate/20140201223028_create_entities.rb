@@ -6,8 +6,6 @@ class CreateEntities < ActiveRecord::Migration
   def change
     create_table :entities do |t|
       t.references :entity_type, index: true
-      t.string :title, null: false
-      t.text :description
       t.hstore :attrs, default: {}
       t.decimal :latitude,  precision: 10, scale: 6
       t.decimal :longitude, precision: 10, scale: 6
@@ -16,6 +14,6 @@ class CreateEntities < ActiveRecord::Migration
     end
 
     add_gist_index :entities
-    add_gin_index :entities, :attrs
+    add_gin_index  :entities, :attrs
   end
 end

@@ -1,3 +1,4 @@
 class Characteristic < ActiveRecord::Base
-  has_and_belongs_to_many :players
+  has_many :player_characteristics
+  has_many :players, through: :player_characterstics
 end

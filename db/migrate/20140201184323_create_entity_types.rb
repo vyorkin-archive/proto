@@ -6,8 +6,8 @@ class CreateEntityTypes < ActiveRecord::Migration
   def change
     create_table :entity_types do |t|
       t.string :name, null: false
-      t.hstore :attrs, default: {}
       t.text :description
+      t.hstore :attrs, default: {}
 
       t.timestamps
     end

@@ -30,8 +30,6 @@ ActiveRecord::Schema.define(version: 20140202161047) do
 
   create_table "entities", force: true do |t|
     t.integer  "entity_type_id"
-    t.string   "title",                                                null: false
-    t.text     "description"
     t.hstore   "attrs",                                   default: {}
     t.decimal  "latitude",       precision: 10, scale: 6
     t.decimal  "longitude",      precision: 10, scale: 6
@@ -42,24 +40,17 @@ ActiveRecord::Schema.define(version: 20140202161047) do
   add_index "entities", ["attrs"], name: "entities_attrs_gin_index", using: :gin
   add_index "entities", ["entity_type_id"], name: "index_entities_on_entity_type_id", using: :btree
 
-  create_table "entities_interactions", force: true do |t|
-    t.integer "entity_id"
-    t.string  "title",     null: false
-  end
-
-  add_index "entities_interactions", ["entity_id"], name: "index_entities_interactions_on_entity_id", using: :btree
-
   create_table "entity_types", force: true do |t|
     t.string   "name",                     null: false
-    t.hstore   "attrs",       default: {}
     t.text     "description"
+    t.hstore   "attrs",       default: {}
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "entity_types", ["attrs"], name: "entity_types_attrs_gin_index", using: :gin
 
-  create_table "entity_types_interactions", id: false, force: true do |t|
+  create_table "entity_types_interactions", force: true do |t|
     t.integer "entity_type_id", null: false
     t.integer "interaction_id", null: false
   end
@@ -75,19 +66,10 @@ ActiveRecord::Schema.define(version: 20140202161047) do
     t.datetime "updated_at"
   end
 
-  create_table "interactions_skills", force: true do |t|
-    t.integer "skill_id"
-    t.integer "interaction_id"
-  end
-
-  add_index "interactions_skills", ["interaction_id"], name: "index_interactions_skills_on_interaction_id", using: :btree
-  add_index "interactions_skills", ["skill_id", "interaction_id"], name: "players_interaction_skills_unique_index", unique: true, using: :btree
-  add_index "interactions_skills", ["skill_id"], name: "index_interactions_skills_on_skill_id", using: :btree
-
   create_table "item_types", force: true do |t|
     t.string   "name",                     null: false
-    t.hstore   "attrs",       default: {}
     t.text     "description"
+    t.hstore   "attrs",       default: {}
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -96,15 +78,27 @@ ActiveRecord::Schema.define(version: 20140202161047) do
 
   create_table "items", force: true do |t|
     t.integer  "item_type_id"
-    t.string   "title",                     null: false
-    t.text     "description"
-    t.hstore   "attrs",        default: {}
+    t.hstore   "attrs",                                 default: {}
+    t.decimal  "latitude",     precision: 10, scale: 6
+    t.decimal  "longitude",    precision: 10, scale: 6
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "items", ["attrs"], name: "items_attrs_gin_index", using: :gin
   add_index "items", ["item_type_id"], name: "index_items_on_item_type_id", using: :btree
+
+  create_table "player_characteristics", force: true do |t|
+    t.integer  "player_id",                       null: false
+    t.integer  "characteristic_id",               null: false
+    t.float    "value",             default: 0.0, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "player_characteristics", ["characteristic_id"], name: "index_player_characteristics_on_characteristic_id", using: :btree
+  add_index "player_characteristics", ["player_id", "characteristic_id"], name: "index_player_characteristics_on_player_id_and_characteristic_id", unique: true, using: :btree
+  add_index "player_characteristics", ["player_id"], name: "index_player_characteristics_on_player_id", using: :btree
 
   create_table "player_skills", force: true do |t|
     t.integer  "player_id",    null: false
@@ -128,16 +122,7 @@ ActiveRecord::Schema.define(version: 20140202161047) do
 
   add_index "players", ["user_id"], name: "index_players_on_user_id", using: :btree
 
-  create_table "players_characteristics", id: false, force: true do |t|
-    t.integer "player_id",         null: false
-    t.integer "characteristic_id", null: false
-  end
-
-  add_index "players_characteristics", ["characteristic_id"], name: "index_players_characteristics_on_characteristic_id", using: :btree
-  add_index "players_characteristics", ["player_id", "characteristic_id"], name: "players_characteristics_unique_index", unique: true, using: :btree
-  add_index "players_characteristics", ["player_id"], name: "index_players_characteristics_on_player_id", using: :btree
-
-  create_table "skill_dependencies", id: false, force: true do |t|
+  create_table "skill_dependencies", force: true do |t|
     t.integer "from_id", null: false
     t.integer "to_id",   null: false
   end
@@ -153,6 +138,15 @@ ActiveRecord::Schema.define(version: 20140202161047) do
   end
 
   add_index "skills", ["attrs"], name: "skills_attrs_gin_index", using: :gin
+
+  create_table "skills_interactions", force: true do |t|
+    t.integer "skill_id",       null: false
+    t.integer "interaction_id", null: false
+  end
+
+  add_index "skills_interactions", ["interaction_id"], name: "index_skills_interactions_on_interaction_id", using: :btree
+  add_index "skills_interactions", ["skill_id", "interaction_id"], name: "skills_interactions_unique_index", unique: true, using: :btree
+  add_index "skills_interactions", ["skill_id"], name: "index_skills_interactions_on_skill_id", using: :btree
 
   create_table "spatial_ref_sys", id: false, force: true do |t|
     t.integer "srid",                   null: false
