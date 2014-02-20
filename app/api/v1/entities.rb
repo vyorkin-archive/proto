@@ -22,17 +22,12 @@ module V1
 
       desc 'Обновить сущность'
       params do
-        optional :title, type: String, desc: 'Название'
-        optional :description, type: String, desc: 'Описание'
         optional :attrs, type: Hash, desc: 'Атрибуты'
         optional :latitude, type: BigDecimal, desc: 'Широта'
         optional :longitude, type: BigDecimal, desc: 'Долгота'
       end
       put '/', jbuilder: 'v1/entities/show' do
-        update!(@entity,
-          :title, :description, :attrs,
-          :latitude, :longitude
-        )
+        update!(@entity, :attrs, :latitude, :longitude)
       end
 
       desc 'Удалить сущность'
@@ -56,16 +51,14 @@ module V1
 
       desc 'Создать сущность'
       params do
-        requires :title, type: String, desc: 'Название'
-        optional :description, type: String, desc: 'Описание'
         optional :attrs, type: Hash, desc: 'Атрибуты'
         optional :latitude, type: BigDecimal, desc: 'Широта'
         optional :longitude, type: BigDecimal, desc: 'Долгота'
       end
       post '/', jbuilder: 'v1/entities/show' do
         @entity = try_create!(Entity,
-          :entity_type_id, :title, :description,
-          :attrs, :latitude, :longitude
+          :entity_type_id, :attrs,
+          :latitude, :longitude
         )
       end
     end

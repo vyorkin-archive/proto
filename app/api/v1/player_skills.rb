@@ -33,11 +33,8 @@ module V1
       end
 
       desc 'Обновить время последнего использования умения'
-      params do
-        requires :time, type: DateTime, desc: 'Время последнего использования'
-      end
       put '/use' do
-        try_update!(@player_skill, :id, :time)
+        @player_skill.touch(:last_used_at)
         status 204
       end
 

@@ -1,1 +1,1 @@
-json.extract! entity, :id, :title, :description, :attrs, :latitude, :longitude
+json.extract! entity, :id, :attrs, :latitude, :longitude

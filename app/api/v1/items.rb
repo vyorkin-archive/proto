@@ -18,15 +18,14 @@ module V1
       end
 
       desc 'Получить предмет по идентификатору'
-      get ':id', jbuilder: 'v1/items/show'
+      get '/', jbuilder: 'v1/items/show'
 
       desc 'Обновить предмет'
       params do
-        optional :description, type: String, desc: 'Описание'
         optional :attrs, type: Hash, desc: 'Атрибуты'
       end
       put '/', jbuilder: 'v1/items/show' do
-        update!(@item, :title, :description, :attrs)
+        update!(@item, :attrs)
       end
 
       desc 'Удалить предмет'
@@ -50,15 +49,10 @@ module V1
 
       desc 'Создать предмет'
       params do
-        requires :title, type: String, desc: 'Название'
-        optional :description, type: String, desc: 'Описание'
         optional :attrs, type: Hash, desc: 'Атрибуты'
       end
       post '/', jbuilder: 'v1/items/show' do
-        @item = try_create!(Item,
-          :item_type_id,
-          :title, :description, :attrs
-        )
+        @item = try_create!(Item, :item_type_id, :attrs)
       end
     end
   end

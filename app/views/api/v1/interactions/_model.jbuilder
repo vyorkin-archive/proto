@@ -1,1 +1,1 @@
-json.extract! interaction, :id, :name, :description
+json.extract! interaction, :id, :title, :description
