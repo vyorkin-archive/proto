@@ -20,8 +20,10 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'therubyracer', platforms: :ruby
 gem 'jquery-rails'
 gem 'twitter-bootstrap-rails'
+gem 'ngmin-rails'
 
 group :development do
+  gem 'bullet'
   gem 'byebug'
   gem 'pry-byebug'
   gem 'pry-rails'

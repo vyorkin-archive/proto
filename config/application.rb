@@ -13,6 +13,8 @@ module Proto
 
     config.paths.add 'app/api', glob: "**/*.rb"
 
+    config.assets.paths << Rails.root.join('Rails', 'assets', 'components')
+
     config.time_zone = 'Moscow'
 
     I18n.config.enforce_available_locales = true
